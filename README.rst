@@ -19,6 +19,13 @@ Installation
 
     $ pip install git+https://github.com/lonetwin/sftpserver.git@master
 
+Or from source code checkout
+::
+
+    pip install -e .
+
+
+
 
 Examples
 --------
@@ -38,6 +45,18 @@ Examples
 Generating a test private key::
 
     $ openssl genrsa -out server.key.pem 4096               # generate a private key
+    ssh-keygen -t rsa -f server.key.pem  # generate a private key, NOTE no password
+
+Quick server start:
+::
+
+    python -m sftpserver --host 0.0.0.0 --port 9999 --level DEBUG -r src --keyfile server.key.pem
+    # NOTE no auth takes place, anything is accepted!
+
+Client
+::
+
+    sftp -P 9999 madeup@localhost
 
 Connecting with a Python client to our server::
 
