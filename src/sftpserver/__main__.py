@@ -79,8 +79,10 @@ def start_server(host=HOST, port=PORT, root=ROOT, keyfile=None, password=None, l
     logger = setup_logging(level, mode)
 
     if keyfile is None:
+        logger.debug('generating RSAkey')
         server_key = paramiko.RSAKey.generate(bits=1024)
     else:
+        logger.debug('Assuming %s contains an RSAkey', keyfile)
         server_key = paramiko.RSAKey.from_private_key_file(keyfile, password=password)
 
     StubSFTPServer.ROOT = root
@@ -90,11 +92,13 @@ def start_server(host=HOST, port=PORT, root=ROOT, keyfile=None, password=None, l
 
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, True)
+    #server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, True)  # this is safer and ensures no other process can steal passwords, etc.
     server_socket.bind((host, port))
     server_socket.listen(BACKLOG)
 
     sessions = []
     while True:
+        logger.debug('Start of forever loop')
         connection, _ = server_socket.accept()
         if mode == 'forked':
             logger.debug('Starting a new process')
