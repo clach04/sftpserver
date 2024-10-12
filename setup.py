@@ -7,6 +7,8 @@ classifiers = """\
 Intended Audience :: Developers
 License :: OSI Approved :: MIT License
 Programming Language :: Python
+Programming Language :: Python :: 3
+Programming Language :: Python :: 3.11
 Topic :: Internet :: File Transfer Protocol (FTP)
 Operating System :: Unix
 """
